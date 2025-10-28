@@ -7,3 +7,4 @@
 - TestNG for execution control and Listeners.
 - Maven for project management.
 - PageObject Design Pattern.
+- ExtentReports for Reporting.
