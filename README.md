@@ -7,3 +7,6 @@
 - Maven for project management.
 - PageObject Design Pattern.
 - ExtentReports for Reporting and Logging.
+
+### To run the framework use :
+-> mvn clean test
