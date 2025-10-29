@@ -1,12 +1,15 @@
 package PageObjects;
 
+import ExtentReporting.MyExtentReport;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+public class LoginPage extends MyExtentReport{
 
 
     // Fields
@@ -21,19 +24,22 @@ public class LoginPage {
     @FindBy(id = "login-button")
     WebElement loginBtn;
 
-    public LoginPage(WebDriver driver){
+    public LoginPage(WebDriver driver, ExtentTest test){
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        this.test = test;
     }
 
     // Methods
     public void provideUsername(String username){
-        System.out.println("Providing Username : " + username);
+        //System.out.println("Providing Username : " + username);
+        test.log(Status.INFO,"Proving Username : " + username);
         userName.sendKeys(username);
     }
 
     public void providePassword(String password){
-        System.out.println("Providing Password : " + password);
+        // System.out.println("Providing Password : " + password);
+        test.log(Status.INFO,"Providing Password : " + password);
         passWord.sendKeys(password);
     }
     public void clickLoginBtn(){

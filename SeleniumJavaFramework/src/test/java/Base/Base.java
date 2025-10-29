@@ -1,5 +1,7 @@
 package Base;
 
+import ExtentReporting.MyExtentReport;
+import com.aventstack.extentreports.ExtentReports;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -9,15 +11,14 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -26,6 +27,12 @@ public class Base {
     public WebDriver driver;
     private String[] browsers ;
     public HashMap<String, String> myData = new HashMap<>();
+    public MyExtentReport exReport;
+    public ExtentReports reporter;
+
+    static {
+        System.out.println("👋 Author - Gurparv Singh !");
+    }
 
     @BeforeSuite
     public void setUp() throws IOException, ParseException {
@@ -33,6 +40,22 @@ public class Base {
         readConfigFile();
         readData();
         instantiateBrowser();
+        exReport = new MyExtentReport();
+        reporter = exReport.instantiateReportingAgent();
+
+    }
+
+    @BeforeTest
+    public void beforeTest(){
+        System.out.println("▶️ Before Test Execution...");
+
+    }
+
+    @AfterTest
+    public void tearDown(){
+        System.out.println("🔚 Tearing Down the Execution...");
+        exReport.addToReport();
+        driver.quit();
 
     }
 
