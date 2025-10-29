@@ -1,5 +1,8 @@
 package Base;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -10,20 +13,27 @@ import org.testng.annotations.BeforeSuite;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 public class Base {
 
     public WebDriver driver;
     private String[] browsers ;
+    public HashMap<String, String> myData = new HashMap<>();
 
     @BeforeSuite
-    public void setUp() throws IOException {
+    public void setUp() throws IOException, ParseException {
         System.out.println("Running Setup !");
         readConfigFile();
+        readData();
         instantiateBrowser();
+
     }
 
     public void readConfigFile() throws IOException {
@@ -64,6 +74,22 @@ public class Base {
                     System.out.println("🤔 Either empty or Not a valid browser name.");
             }
         }
+    }
+
+    public void readData() throws IOException, ParseException {
+        System.out.println("📃 Reading TestData ... ");
+        JSONParser jp = new JSONParser();
+        String userDirectory = System.getProperty("user.dir");
+        String pathToTestData = "\\src\\test\\java\\resources\\";
+        String completeTestDataPath = userDirectory + pathToTestData + "TestData.json";
+        FileReader fr = new FileReader(completeTestDataPath);
+        Object obj = jp.parse(fr);
+        JSONObject jObj = (JSONObject) obj;
+        Set<String> keys = jObj.keySet();
+        for(String key: keys)
+            myData.put(key, (String)jObj.get(key));
+        System.out.println("My Test Data values.. 👇");
+        System.out.println(myData);
     }
 
 }
